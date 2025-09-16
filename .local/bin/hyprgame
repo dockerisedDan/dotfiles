@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Monitor variables
+MONITOR="DP-1" # Replace with your monitor
+RESOLUTION="3440x1440" # Replace with your resolution
+REFRESH_RATE="180" # Replace with your refresh rate
+POSITION="0x0" # Moves monitor to main position
+SCALE="1" # Disables resolution scaling
+GAME_WORKSPACE="10" # Workspace to focus and open game
+
+# Proton env variables
+export PROTON_LOG=0
+export PROTON_ENABLE_WAYLAND=0
+export PROTON_FSR4_UPGRADE=1
+export PROTON_FSR3_UPGRADE=1
+export PROTON_XESS_UPGRADE=1
+export PROTON_FSR4_INDICATOR=1
+export WAYLANDDRV_PRIMARY_MONITOR=$MONITOR
+export PROTON_USE_SDL=1
+export PROTON_USE_NTSYNC=1
+
+# Used to return to workspace after game closes
+RETURN_WORKSPACE=$(hyprctl monitors | grep -A 20 "$MONITOR" | grep 'active workspace' | awk '{print $3}')
+
+# Enable VRR
+echo "enabling VRR on monitor $MONITOR..."
+hyprctl keyword monitor "$MONITOR,${RESOLUTION}@${REFRESH_RATE},${POSITION},${SCALE},vrr,1"
+
+# Focus $MONITOR on $GAME_WORKSPACE
+echo "focusing workspace $GAME_WORKSPACE on monitor $MONITOR..."
+hyprctl dispatch focusmonitor $MONITOR
+hyprctl dispatch workspace ${GAME_WORKSPACE}
+
+# Launch the game in the background with mangohud and game-performance
+echo "launching game..."
+mangohud game-performance "$@" &
+GAME_PID=$!
+
+# Wait for game process to exit
+wait $GAME_PID
+GAME_EXIT_CODE=$?
+
+# Disable VRR and return to workspace
+echo "disabling VRR and returning to workspace $RETURN_WORKSPACE on monitor $MONITOR..."
+hyprctl keyword monitor "$MONITOR,${RESOLUTION}@${REFRESH_RATE},${POSITION},${SCALE},vrr,2"
+hyprctl dispatch focusmonitor $MONITOR
+hyprctl dispatch workspace "$RETURN_WORKSPACE"
+hyprctl reload
+
+# Exit with game's exit code
+exit $GAME_EXIT_CODE
