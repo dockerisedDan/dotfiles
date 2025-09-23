@@ -6,6 +6,8 @@ A backup of my linux config
 - Ghostty
 - Neovim
 - zsh
+- tmux
 
 ## Scripts
-- Hyprgame
+- Hyprgame (wrapper script for playing games on hyprland)
+- Update (copy config files into project)
