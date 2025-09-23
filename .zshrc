@@ -5,7 +5,7 @@ setopt autocd
 unsetopt beep extendedglob nomatch notify
 
 zstyle :compinstall filename '$HOME/.zshrc'
-export PATH="$PATH:/home/daniel/go/bin"
+export PATH="$PATH:$HOME/go/bin"
 
 fpath=(~/.zsh/zsh-completions $fpath)
 
