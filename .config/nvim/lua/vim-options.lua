@@ -16,6 +16,14 @@ vim.opt.scrolloff = 10
 vim.opt.termguicolors = true
 vim.opt.mousemoveevent = true
 
+-- Show virtual text and signs for errors
+vim.diagnostic.config({
+	virtual_text = true,
+	signs = true,
+	underline = true,
+	update_in_insert = false,
+})
+
 -- Navigate vim panes better
 vim.keymap.set("n", "<c-h>", ":wincmd h<CR>")
 vim.keymap.set("n", "<c-j>", ":wincmd j<CR>")
