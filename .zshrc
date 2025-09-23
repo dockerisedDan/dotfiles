@@ -1,23 +1,27 @@
-
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
 setopt autocd
 unsetopt beep extendedglob nomatch notify
-bindkey -v
 
 zstyle :compinstall filename '$HOME/.zshrc'
+export PATH="$PATH:/home/daniel/go/bin"
+
+fpath=(~/.zsh/zsh-completions $fpath)
 
 autoload -Uz compinit
 compinit
-# End of lines added by compinstall
 
-	alias ls="lsd -F"
+alias ls="lsd -F"
 
+bindkey -e
+bindkey "^[[3~" delete-char
+
+chpwd() { :; }
+cd "$HOME"
 sleep 0.1
 fastfetch
 
 eval "$(starship init zsh)"
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-fpath=(~/.zsh/zsh-completions $fpath)
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
