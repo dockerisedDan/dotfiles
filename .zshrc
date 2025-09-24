@@ -14,7 +14,6 @@ compinit
 
 alias ls="lsd -F"
 
-bindkey -e
 bindkey "^[[3~" delete-char
 
 chpwd() { :; }
