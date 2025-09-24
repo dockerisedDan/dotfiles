@@ -34,15 +34,27 @@ fi
 sync_dir() {
     local src=$1
     local dest=$2
-    echo "Syncing dir: $src -> $dest"
-    rsync -av --delete "$src/" "$dest"
+    printf "\n==========================================================================\n"
+    printf "\n🗂️  Syncing dir: %s -> %s\n" "$src" "$dest"
+    if [ -d "$src" ]; then
+        rsync -av --delete "$src/" "$dest" > /dev/null
+        printf "✅  Sync successful\n"
+    else
+        printf "❌  Source file missing: %s\n" "$src" 
+    fi
 }
 
 sync_file() {
     local src=$1
     local dest=$2
-    echo "Syncing file: $src -> $dest"
-    rsync -av "$src" "$dest"
+    printf "\n==========================================================================\n"
+    printf "\n📄  Syncing dir: %s -> %s\n" "$src" "$dest"
+    if [ -f "$src" ]; then
+        rsync -av "$src" "$dest" > /dev/null
+        printf "✅  Sync successful\n"
+    else
+        printf "❌  Source file missing: %s\n" "$src" 
+    fi
 }
 
 # Run sync
@@ -70,8 +82,9 @@ for script in "${SCRIPTS[@]}"; do
     fi
 done
 
+printf "\n==========================================================================\n"
 if [[ "$DIRECTION" == "backup" ]]; then
-    echo "✅ Dotfiles updated in $(pwd)"
+    printf "\n✅ Dotfiles updated in %s\n" "$(pwd)"
 else
-    echo "✅ Dotfiles updated in $HOME"
+    printf "\n✅ Dotfiles updated in %s\n" "$HOME"
 fi
