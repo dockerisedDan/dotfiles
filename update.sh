@@ -3,7 +3,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PROJECT_DIR="$HOME/Documents/github/dotfiles-backup"
+PROJECT_DIR="."
 CONFIG_DIR="$HOME/.config"
 SCRIPT_DIR="$HOME/.local/bin"
 
@@ -24,19 +24,54 @@ SCRIPTS=(
     "hyprgame"
 )
 
+# Determine sync direction
+# Default: backup (home -> project)
+DIRECTION="backup"
+if [[ "${1:-}" == "--restore" ]]; then
+    DIRECTION="restore"
+fi
+
+sync_dir() {
+    local src=$1
+    local dest=$2
+    echo "Syncing dir: $src -> $dest"
+    rsync -av --delete "$src/" "$dest"
+}
+
+sync_file() {
+    local src=$1
+    local dest=$2
+    echo "Syncing file: $src -> $dest"
+    rsync -av "$src" "$dest"
+}
+
+# Run sync
 for dir in "${DIRS[@]}"; do
-    echo "Syncing $dir..."
-    rsync -av --delete "$CONFIG_DIR/$dir/" "$PROJECT_DIR/.config/$dir"
+    if [[ $DIRECTION == "backup" ]]; then
+        sync_dir "$CONFIG_DIR/$dir" "$PROJECT_DIR/.config/$dir"
+    else
+        sync_dir "$PROJECT_DIR/.config/$dir" "$CONFIG_DIR/$dir"
+    fi
 done
 
 for file in "${FILES[@]}"; do
-    echo "Syncing $file..."
-    rsync -av --delete "$HOME/$file" "$PROJECT_DIR/$file"
+    if [[ $DIRECTION == "backup" ]]; then
+        sync_file "$HOME/$file" "$PROJECT_DIR/$file"
+    else
+        sync_file "$PROJECT_DIR/$file" "$HOME/$file"
+    fi
 done
 
 for script in "${SCRIPTS[@]}"; do
-    echo "Syncing $script..."
-    rsync -av --delete "$SCRIPT_DIR/$script"
+    if [[ $DIRECTION == "backup" ]]; then
+        sync_file "$SCRIPT_DIR/$script" "$PROJECT_DIR/.local/bin/$script"
+    else
+        sync_file "$PROJECT_DIR/.local/bin/$script" "$SCRIPT_DIR/$script"
+    fi
 done
 
-echo "✅ Dotfiles updated in $PROJECT_DIR"
+if [[ "$DIRECTION" == "backup" ]]; then
+    echo "✅ Dotfiles updated in $(pwd)"
+else
+    echo "✅ Dotfiles updated in $HOME"
+fi
