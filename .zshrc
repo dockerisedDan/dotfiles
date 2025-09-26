@@ -4,6 +4,8 @@ SAVEHIST=1000
 setopt autocd
 unsetopt beep extendedglob nomatch notify
 
+bindkey -e
+
 zstyle :compinstall filename '$HOME/.zshrc'
 export PATH="$PATH:$HOME/go/bin"
 
