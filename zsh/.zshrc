@@ -15,6 +15,7 @@ autoload -Uz compinit
 compinit
 
 alias ls="lsd -F"
+alias stow="stow -t ~"
 
 bindkey "^[[3~" delete-char
 
