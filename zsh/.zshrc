@@ -24,6 +24,8 @@ cd "$HOME"
 sleep 0.1
 fastfetch
 
+source <(fzf --zsh)
+
 eval "$(starship init zsh)"
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
