@@ -8,6 +8,7 @@ bindkey -e
 
 zstyle :compinstall filename '$HOME/.zshrc'
 export PATH="$PATH:$HOME/go/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 fpath=(~/.zsh/zsh-completions $fpath)
 
