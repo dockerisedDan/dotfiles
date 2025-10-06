@@ -1,13 +1,12 @@
-# My Linux dotfiles
+# Linux dotfiles
 
-A backup of my linux config
+A backup of my dotfiles, intended to be used with stow to symlink into relevant `$HOME` locations
 
-## Config files
+## Tracked configs
 - Ghostty
 - Neovim
 - zsh
 - tmux
 
-## Scripts
+## Tracked Scripts
 - Hyprgame (wrapper script for playing games on hyprland)
-- Update (copy config files into project)

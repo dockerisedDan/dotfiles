@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+SESSION_NAME="project"
+DIR="${PWD}"
+CREATE_DIR=false
+
+usage() {
+    echo "Usage: $0 [--dir <directory>] [--create]"
+    exit 1
+}
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --dir)
+            shift
+            [[ -z "$1" ]] && usage
+            DIR="$1"
+            ;;
+        --create)
+            CREATE_DIR=true
+            ;;
+        *)
+            usage
+            ;;
+    esac
+    shift
+done
+
+# Check or create directory
+if [[ ! -d "$DIR" ]]; then
+    if [[ "$CREATE_DIR" == true ]]; then
+        mkdir -p "$DIR" || { echo "Error: Failed to create '$DIR'"; exit 1; }
+    else
+        echo "Error: Directory '$DIR' does not exist. Use --create to create it."
+        exit 1
+    fi
+fi
+
+# Attach if session exists
+if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+    tmux select-window -t "$SESSION_NAME:editor"
+    tmux attach-session -t "$SESSION_NAME"
+    exit 0
+fi
+
+# Editor window: nvim directly in specified dir (closing nvim closes window)
+tmux new-session -d -s "$SESSION_NAME" -n editor -c "$DIR" "nvim"
+
+# Terminal window: default shell, cd into directory, then clear prompt
+tmux new-window -t "$SESSION_NAME" -n terminal
+tmux send-keys -t "$SESSION_NAME:terminal" "cd '$DIR'" C-m
+tmux send-keys -t "$SESSION_NAME:terminal" "clear" C-m
+
+# Focus editor window
+tmux select-window -t "$SESSION_NAME:editor"
+
+# Attach session
+tmux attach-session -t "$SESSION_NAME"
+
