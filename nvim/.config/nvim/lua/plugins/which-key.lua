@@ -7,15 +7,15 @@ return {
 			-- or leave it empty to use the default settings
 			-- refer to the configuration section below
 		},
-		keys = {
-			{
-				"<leader>?",
-				function()
-					require("which-key").show({ global = false })
-				end,
-				desc = "Buffer Local Keymaps (which-key)",
-			},
-		},
+		--keys = {
+		--	{
+		--		"<leader>?",
+		--		function()
+		--			require("which-key").show({ global = false })
+		--		end,
+		--		desc = "Buffer Local Keymaps (which-key)",
+		--	},
+		--},
 		config = function()
 			local wk = require("which-key")
 			wk.setup({
@@ -29,6 +29,7 @@ return {
 				{ "<leader>f", group = "File" },
 				{ "<leader>c", group = "Code" },
 				{ "<leader>r", group = "Remote" },
+                { "<leader>L", group = "Lazy" },
 			})
 		end,
 	},

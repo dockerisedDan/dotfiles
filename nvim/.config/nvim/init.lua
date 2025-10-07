@@ -30,3 +30,7 @@ require("lazy").setup({
 	-- automatically check for plugin updates
 	checker = { enabled = true },
 })
+
+-- Sync and update plugins
+vim.keymap.set("n", "<leader>Ls", ":Lazy sync<CR>", { desc = "Lazy Sync plugins" })
+vim.keymap.set("n", "<leader>Lu", ":Lazy update<CR>", { desc = "Lazy Update plugins" })
