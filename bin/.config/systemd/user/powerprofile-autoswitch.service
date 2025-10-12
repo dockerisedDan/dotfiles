@@ -1,0 +1,10 @@
+[Unit]
+Description=Auto switch powerprofiles on AC plug/unplug
+
+[Service]
+ExecStart=%h/.local/bin/powerprofile-autoswitch.sh
+Restart=always
+
+[Install]
+WantedBy=default.target
+
