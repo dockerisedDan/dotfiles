@@ -17,6 +17,7 @@ compinit
 
 alias ls="lsd -F"
 alias stow="stow -t ~"
+alias tmux="tmux-session"
 
 bindkey "^[[3~" delete-char
 
