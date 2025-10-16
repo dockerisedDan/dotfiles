@@ -9,7 +9,8 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "pyright", "qmlls", "ts_ls", "typos_lsp" },
+				ensure_installed = { "lua_ls", "pyright", "qmlls", "ts_ls", "typos_lsp", "tailwindcss" },
+				automatic_installation = true,
 			})
 		end,
 	},
@@ -43,9 +44,13 @@ return {
 				capabilities = capabilities,
 			})
 
-			vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show error details"})
-			vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Show definition"})
-			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Show code actions"})
+			vim.lsp.config("tailwindcss", {
+				capabilities = capabilities,
+			})
+
+			vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Show error details" })
+			vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Show definition" })
+			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Show code actions" })
 		end,
 	},
 }
